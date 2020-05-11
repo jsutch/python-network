@@ -1,0 +1,15 @@
+create a cgi directory. This defaults to ['/cgi-bin', '/htbin'] and describes directories to treat as containing CGI scripts.
+
+add a script like:
+test.py: ( with 555 permissions)
+
+#!/usr/bin/env python3
+print("Content-Type: text/html\n")
+print("<!doctype html><title>Hello</title><h2>hello world</h2>")
+
+Run the server:
+python3 -m http.server --bind localhost --cgi 8000
+
+
+Test the with a client:
+python -mwebbrowser http://localhost:8000/cgi-bin/test.py
