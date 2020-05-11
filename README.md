@@ -1,6 +1,6 @@
 ## Python and Networking examples
 
-A variety of demos and script tutorials about using python networking
+A variety of demos and script tutorials about sockets, dpkt and scapy
 
 
 Thanks to:
