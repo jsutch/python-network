@@ -1,36 +1,26 @@
 import socket
+import sys
 
-tcpSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-tcpSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+# Create a TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-tcpSocket.bind(("0.0.0.0", 8000))
-tcpSocket.listen(2)
+# Bind the socket to the address given on the command line
+server_address = ('0.0.0.0', 9999)
+sock.bind(server_address)
+print('starting up on %s port %s' % sock.getsockname(), file=sys.stderr)
+sock.listen(1)
 
-
-while 1:
- print("Waiting for a Client ... ")
- (client, (ip, sock)) = tcpSocket.accept()
-
- print("Received connection from : ", ip)
- client.send("Press Return or Ctrl+C to close..\n")
- print("Starting ECHO output ... ")
-
- data = 'dummy'
-
- while len(data):
-  data = client.recv(2048)
-  if len(data)==1:
-   print("Closing connection with ", ip)
-   client.close()
-   print("Connection closed successfully.!!")
-   print("---------------------------------")
-   break
-  if len(data)==0:
-   print("Some Error in connection with ", ip)
-   print("Connection closed with ", ip)
-   print("---------------------------------")
-   break
-  print("Client sent:", data)
-  client.send(data)
-
-tcpSocket.close()
+while True:
+    print('waiting for a connection', file=sys.stderr)
+    connection, client_address = sock.accept()
+    try:
+        print('client connected:', client_address, file=sys.stderr)
+        while True:
+            data = connection.recv(16)
+            print('received "%s"' % data, file=sys.stderr)
+            if data:
+                connection.sendall(data)
+            else:
+                break
+    finally:
+        connection.close()

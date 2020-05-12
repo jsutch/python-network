@@ -6,13 +6,13 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Connect the socket to the port on the server given by the caller
 #server_address = (sys.argv[1], 10000)
-server_address = (sys.argv[1], 8000)
+server_address = ('beatbox', 9999)
 print('connecting to %s port %s' % server_address, file=sys.stderr)
 sock.connect(server_address)
 
 try:
     
-    message = b'message.'
+    message = b'I am a new message - adding more strings to make it longer.'
     print('sending "%s"' % message, file=sys.stderr)
     sock.sendall(message)
 
